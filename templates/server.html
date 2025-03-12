@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pico Web Server</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Raspberry Pi Pico Web Server</h1>
+    <h2>Led Control</h2>
+    <form action="./lighton">
+        <input type="submit" value="Light on" />
+    </form>
+    <br>
+    <form action="./lightoff">
+        <input type="submit" value="Light off" />
+    </form>
+    <p>LED state: {state}</p>
+    <h2>Fetch New Value</h2>
+    <form action="./value">
+        <input type="submit" value="Fetch value" />
+    </form>
+    <p>Fetched value: {random_value}</p>
+</body>
+</html>

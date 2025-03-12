@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Tracker Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Welcome to the Tool Tracker</h1>
+        <h2>Would you like to take a tool?</h2>
+        
+        <!-- Button to take a tool -->
+        <a href="{{ url_for('Take_tools') }}" class="button">Do you want to take  tools</a>
+
+        <!-- Button to return tool available -->
+        <a href="{{ url_for('Return_tools') }}" class="button">Return Tools</a>
+    </div>
+</body>
+</html>

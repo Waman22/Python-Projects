@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Streaming</title>
+</head>
+<body>
+    <h1>Live Streaming</h1>
+    <div>
+        <video id="userCamera" autoplay playsinline width="50%"></video>
+    </div>
+
+    <script>
+        // Access user's camera
+        //this code access the mobile camera and starts a video stream
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoElement = document.getElementById('userCamera');
+                videoElement.srcObject = stream;
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+                alert("Unable to access the camera. Please check your browser settings.");
+            }
+        }
+
+        // Start the camera when the page loads
+        window.onload = startCamera;
+    </script>
+</body>
+</html>

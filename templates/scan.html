@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rear Camera QR Code Scanner</title>
+</head>
+<body>
+    <h1>Rear Camera QR Code Scanner</h1>
+    <div>
+        <video id="userCamera" autoplay playsinline width="50%"></video>
+        <canvas id="cameraCanvas" style="display: none;"></canvas>
+    </div>
+    <div>
+        <h3>Detected QR Code:</h3>
+        <p id="qrResult">None</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <script>
+        async function startCamera() {
+            try {
+                // Request the rear camera (facingMode: 'environment')
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: "environment" } }
+                });
+                const videoElement = document.getElementById('userCamera');
+                videoElement.srcObject = stream;
+
+                // Start QR code scanning
+                scanQRCode(videoElement);
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+                alert("Unable to access the rear camera. Falling back to the default camera.");
+                try {
+                    // Fallback to any available camera if the rear camera isn't accessible
+                    const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    const videoElement = document.getElementById('userCamera');
+                    videoElement.srcObject = fallbackStream;
+
+                    // Start QR code scanning
+                    scanQRCode(videoElement);
+                } catch (fallbackError) {
+                    console.error("Fallback failed:", fallbackError);
+                    alert("Unable to access any camera.");
+                }
+            }
+        }
+
+        function scanQRCode(videoElement) {
+            const canvasElement = document.getElementById('cameraCanvas');
+            const canvasContext = canvasElement.getContext('2d');
+            const qrResultElement = document.getElementById('qrResult');
+
+            function drawFrame() {
+                if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+                    // Set the canvas size to match the video frame
+                    canvasElement.width = videoElement.videoWidth;
+                    canvasElement.height = videoElement.videoHeight;
+
+                    // Draw the video frame onto the canvas
+                    canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+
+                    // Get the image data from the canvas
+                    const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
+
+                    // Decode QR code using jsQR
+                    const qrCode = jsQR(imageData.data, imageData.width, imageData.height);
+
+                    if (qrCode) {
+                        // Draw a bounding box around the detected QR code
+                        canvasContext.beginPath();
+                        canvasContext.moveTo(qrCode.location.topLeftCorner.x, qrCode.location.topLeftCorner.y);
+                        canvasContext.lineTo(qrCode.location.topRightCorner.x, qrCode.location.topRightCorner.y);
+                        canvasContext.lineTo(qrCode.location.bottomRightCorner.x, qrCode.location.bottomRightCorner.y);
+                        canvasContext.lineTo(qrCode.location.bottomLeftCorner.x, qrCode.location.bottomLeftCorner.y);
+                        canvasContext.closePath();
+                        canvasContext.lineWidth = 4;
+                        canvasContext.strokeStyle = 'red';
+                        canvasContext.stroke();
+
+                        // Update the QR code result
+                        qrResultElement.textContent = qrCode.data;
+                    }
+                }
+
+                // Continue scanning for QR codes
+                requestAnimationFrame(drawFrame);
+            }
+
+            // Start the frame loop
+            drawFrame();
+        }
+
+        // Start the camera when the page loads
+        window.onload = startCamera;
+    </script>
+</body>
+</html>

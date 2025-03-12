@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rear Camera Live Streaming</title>
+</head>
+<body>
+    <h1>Rear Camera Live Streaming</h1>
+    <div>
+        <video id="userCamera" autoplay playsinline width="50%"></video>
+    </div>
+
+    <script>
+        async function startCamera() {
+            try {
+                // Request the rear camera (facingMode: 'environment')
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: "environment" } }
+                });
+                const videoElement = document.getElementById('userCamera');
+                videoElement.srcObject = stream;
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+                alert("Unable to access the rear camera. Falling back to the default camera.");
+                try {
+                    // Fallback to any available camera if the rear camera isn't accessible
+                    const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    const videoElement = document.getElementById('userCamera');
+                    videoElement.srcObject = fallbackStream;
+                } catch (fallbackError) {
+                    console.error("Fallback failed:", fallbackError);
+                    alert("Unable to access any camera.");
+                }
+            }
+        }
+
+        // Start the camera when the page loads
+        window.onload = startCamera;
+    </script>
+</body>
+</html>

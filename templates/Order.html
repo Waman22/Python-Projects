@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Ordering System</title>
+</head>
+<body>
+    <h1>Available Products</h1>
+    <form action="/order" method="POST">
+        <label for="customer_name">Customer Name:</label>
+        <input type="text" name="customer_name" required><br><br>
+
+        {% for product in products %}
+            <div>
+                <input type="checkbox" name="product_id" value="{{ product.id }}">
+                <label>{{ product.name }} - ${{ product.price }}</label>
+                <input type="number" name="quantity" min="1" value="1" required>
+            </div><br>
+        {% endfor %}
+        <button type="submit">Place Order</button>
+    </form>
+</body>
+</html>

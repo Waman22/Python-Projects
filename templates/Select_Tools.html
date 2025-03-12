@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Tools</title>
+</head>
+<body>
+    <h1>Select Tools</h1>
+    <form action="{{ url_for('ScanQR') }}" method="POST">
+        <p>Select the tools you want to take:</p>
+        {% for tool in available_tools %}
+            <input type="checkbox" name="selected_tools" value="{{ tool[0] }}">{{ tool[1] }}<br>
+        {% endfor %}
+        
+        <input type="hidden" name="location" value="{{ location }}">
+        <input type="hidden" name="date" value="{{ date }}">
+
+        <button type="submit">Proceed to Scan QR Codes</button>
+    </form>
+</body>
+</html>

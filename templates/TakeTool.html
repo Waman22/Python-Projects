@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Tools</title>
+</head>
+<body>
+    <h1>Take Tools</h1>
+    <form method="POST">
+        <label for="worker_id">Worker ID:</label>
+        <input type="text" name="worker_id" required><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" name="location" required><br><br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" required><br><br>
+
+        <label>Type of Tool:</label>
+        <select id="Type" name="Type" required>
+            <option value="Electrical Engineering">Power tool</option>
+            <option value="Mechanical Engineering">Portable hand tool</option>
+            <option value="Civil Engineering">Hand Tool</option>
+            <!-- Add more courses as needed -->
+        </select>
+
+        <label for="selected_tools">Select Tools:</label><br>
+        {% for tool in available_tools %}
+            <input type="checkbox" name="selected_tools" value="{{ tool[0] }}"> {{ tool[1] }}<br>
+        {% endfor %}<br>
+
+        <button type="submit">Proceed to Scan</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+</head>
+<body>
+    <h1>QR Code Generated</h1>
+    {% if qr_code_image %}
+        <p>QR Code successfully generated and saved!</p>
+        <img src="{{ url_for('static', filename='images/' + qr_code_image) }}" alt="QR Code">
+        <p><a href="/ADD">Generate Another QR Code</a></p>
+    {% else %}
+        <form method="POST">
+            <label for="File_info">File Info:</label>
+            <input type="text" id="File_info" name="File_info" required><br><br>
+            
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required><br><br>
+            
+            <label for="tool">Tool Name:</label>
+            <input type="text" id="tool" name="tool" required><br><br>
+            
+            <label for="date">Entry Date:</label>
+            <input type="date" id="date" name="date" required><br><br>
+            
+            <button type="submit">Generate QR Code</button>
+        </form>
+    {% endif %}
+</body>
+</html>
